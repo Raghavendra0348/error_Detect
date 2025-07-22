@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hamming Code Error Detector</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #dfe9f3, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 2rem;
+    }
+
+    .container {
+      background: #ffffffcc;
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    h2 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 1rem;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 16px;
+    }
+
+    button {
+      background-color: #00796b;
+      color: white;
+      cursor: pointer;
+      border: none;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+
+    .output {
+      background: #f1f8e9;
+      border-left: 5px solid #8bc34a;
+      padding: 1rem;
+      border-radius: 10px;
+      font-size: 16px;
+      animation: fadeIn 0.4s ease-in;
+      margin-top: 1rem;
+    }
+
+    .error {
+      border-left-color: #f44336;
+      background: #fdecea;
+    }
+
+    @keyframes fadeIn {
+      from {opacity: 0;}
+      to {opacity: 1;}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Hamming Code Error Detector</h2>
+
+    <label for="binary">Enter binary input (e.g., 0100011):</label>
+    <input type="text" id="binary" placeholder="Binary Input">
+
+    <label for="parity">Choose parity type:</label>
+    <select id="parity">
+      <option value="even">Even</option>
+      <option value="odd">Odd</option>
+    </select>
+
+    <button onclick="detectError()">Detect & Correct</button>
+
+    <div class="output" id="result" style="display:none;"></div>
+  </div>
+
+  <script>
+    function detectError() {
+      const input = document.getElementById("binary").value.trim();
+      const parityType = document.getElementById("parity").value.toLowerCase();
+      const resultDiv = document.getElementById("result");
+
+      // Validate input
+      if (!/^[01]+$/.test(input)) {
+        resultDiv.innerHTML = "<strong>Error:</strong> Please enter a valid binary string.";
+        resultDiv.className = "output error";
+        resultDiv.style.display = "block";
+        return;
+      }
+
+      // Reverse input
+      const rev = input.split("").reverse().join("");
+      const n = rev.length;
+
+      // Calculate parity positions
+      let parityPositions = [];
+      for (let i = 0; (1 << i) <= n; i++) {
+        parityPositions.push(1 << i);
+      }
+
+      let errorBits = "";
+
+      for (let p of parityPositions) {
+        let count = 0;
+        for (let i = 1; i <= n; i++) {
+          if (((i & p) !== 0) && rev[i - 1] === '1') {
+            count++;
+          }
+        }
+
+        if (parityType === "even") {
+          errorBits += (count % 2 === 0) ? "0" : "1";
+        } else if (parityType === "odd") {
+          errorBits += (count % 2 === 0) ? "1" : "0";
+        }
+      }
+
+      const errorBinary = errorBits.split("").reverse().join("");
+      const errorPosition = parseInt(errorBinary, 2);
+      let output = `<p><strong>Error position (1-based):</strong> ${errorPosition}</p>`;
+
+      if (errorPosition > 0 && errorPosition <= input.length) {
+        let corrected = input.split("");
+        let flipIndex = input.length - errorPosition;
+        corrected[flipIndex] = corrected[flipIndex] === '0' ? '1' : '0';
+        output += `<p><strong>Corrected binary:</strong> ${corrected.join("")}</p>`;
+      } else {
+        output += `<p>No error detected or position is invalid.</p>`;
+      }
+
+      resultDiv.innerHTML = output;
+      resultDiv.className = "output";
+      resultDiv.style.display = "block";
+    }
+  </script>
+</body>
+</html>
+
