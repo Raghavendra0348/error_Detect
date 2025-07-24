@@ -1,168 +1,357 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Hamming Code Error Detector</title>
+  <meta charset="UTF-8" />
+  <title>Code Converter Suite</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to right, #dfe9f3, #ffffff);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      padding: 2rem;
-    }
+ <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+ 
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+<style>
+  * {
+    box-sizing: border-box;
+  }
 
-    .container {
-      background: #ffffffcc;
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 2rem;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-      max-width: 500px;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color:white;
+    color: black;
+    overflow-x: hidden;
+  }
 
-    h2 {
-      text-align: center;
-      color: #00796b;
-      margin-bottom: 1rem;
-    }
+  header {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #111111;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
 
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
+  h1 {
+    font-family: 'fairplay-display' ;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: black;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  }
 
-    input, select, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 5px;
-      margin-bottom: 15px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
+  p {
+    font-size: 1.1rem;
+    color: #666666;
+  }
 
-    button {
-      background-color: #00796b;
-      color: white;
-      cursor: pointer;
-      border: none;
-      transition: 0.3s ease;
-    }
+  nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
 
-    button:hover {
-      background-color: #004d40;
-    }
+  nav button {
+    background-color: black;
+color:white;
+    padding: 12px 24px;
 
-    .output {
-      background: #f1f8e9;
-      border-left: 5px solid #8bc34a;
-      padding: 1rem;
-      border-radius: 10px;
-      font-size: 16px;
-      animation: fadeIn 0.4s ease-in;
-      margin-top: 1rem;
-    }
 
-    .error {
-      border-left-color: #f44336;
-      background: #fdecea;
-    }
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  }
 
-    @keyframes fadeIn {
-      from {opacity: 0;}
-      to {opacity: 1;}
-    }
-  </style>
+  nav button:hover {
+    background-color: #000000;
+    color: #ffffff;
+    box-shadow: 0 0 14px rgba(255, 255, 255, 0.3);
+  }
+
+  section {
+    display: none;
+    padding: 2rem;
+    max-width: 700px;
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(14px);
+    animation: fadeIn 0.5s ease;
+  }
+
+  section.active {
+    display: block;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    margin: 12px 0;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    background: #2a2a2a;
+    color: #ffffff;
+    transition: all 0.3s ease;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: 2px solid #ffffff;
+    background: #1a1a1a;
+  }
+
+  button.action {
+    background-color: #ffffff;
+    color: #000000;
+    font-weight: bold;
+
+    border-radius: 12px;
+    padding: 14px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+      border: 2px solid black; /* 2px thick white border */
+
+  }
+
+  button.action:hover {
+    background-color: #000000;
+    color: #ffffff;
+
+    box-shadow: 0 0 16px rgba(255, 255, 255, 0.3);
+  }
+
+  .output-box {
+    background: #000000;
+    color: #00ff90;
+    padding: 1rem;
+    border-radius: 15px;
+    font-family: 'Courier New', monospace;
+    margin-top: 1rem;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    box-shadow: 0 0 10px rgba(0, 255, 144, 0.3);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  @media (max-width: 768px) {
+  h1 {
+    font-size: 2rem;
+  }
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+nav button {
+  flex: 1 1 calc(50% - 1rem); /* 2 buttons per row */
+  min-width: 140px;
+  background-color: #fff;
+  color: #000;
+  padding: 12px 18px;
+  border: none;
+  border-radius: 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+nav button:hover {
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+
+  section {
+    padding: 1rem;
+    margin: 1rem;
+  }
+
+  input, select, button.action, textarea {
+    padding: 12px;
+    font-size: 0.95rem;
+      border: 2px solid pink; /* 2px thick white border */
+  }
+
+  .output-box {
+    font-size: 0.9rem;
+    padding: 0.8rem;
+  }
+}
+
+</style>
+
 </head>
 <body>
-  <div class="container">
-    <h2>Hamming Code Error Detector</h2>
 
-    <label for="binary">Enter binary input (e.g., 0100011):</label>
-    <input type="text" id="binary" placeholder="Binary Input">
+  <header>
+    <h1>✨ Bit Code Converter </h1>
+    <p>One Tool to Encode, Detect Errors, and Convert Numbers & Gray Codes</p>
+    <nav>
+      <button onclick="show('encoder')">Hamming Encoder</button>
+      <button onclick="show('error')">Error Detector</button>
+      <button onclick="show('converter')">Number Converter</button>
+      <button onclick="show('gray')">Gray Code</button>
+    </nav>
+  </header>
 
-    <label for="parity">Choose parity type:</label>
-    <select id="parity">
-      <option value="even">Even</option>
-      <option value="odd">Odd</option>
+  <section id="encoder" class="active">
+    <h2>Hamming Code Encoder</h2>
+    <input id="dataBits" placeholder="Enter binary data (e.g., 1011)" />
+    <select id="paritySelect">
+      <option value="even">Even Parity</option>
+      <option value="odd">Odd Parity</option>
     </select>
+    <button class="action" onclick="encodeHamming()">Generate Hamming Code</button>
+    <div class="output-box" id="hammingResult"></div>
+  </section>
 
-    <button onclick="detectError()">Detect & Correct</button>
+  <section id="error">
+    <h2>Hamming Code Error Detector</h2>
+    <input id="errorInput" placeholder="Enter received binary (e.g., 0100011)" />
+    <select id="errorParity">
+      <option value="even">Even Parity</option>
+      <option value="odd">Odd Parity</option>
+    </select>
+    <button class="action" onclick="detectError()">Detect & Correct</button>
+    <div class="output-box" id="errorResult"></div>
+  </section>
 
-    <div class="output" id="result" style="display:none;"></div>
-  </div>
+  <section id="converter">
+    <h2>Number System Converter</h2>
+    <select id="inputBase">
+      <option value="2">Binary</option>
+      <option value="8">Octal</option>
+      <option value="10">Decimal</option>
+      <option value="16">Hexadecimal</option>
+    </select>
+    <input id="numberInput" placeholder="Enter number" />
+    <button class="action" onclick="convertNumber()">Convert</button>
+    <div class="output-box" id="conversionResult"></div>
+  </section>
+
+  <section id="gray">
+    <h2>Gray Code Converter</h2>
+    <input id="grayBinaryInput" placeholder="Enter Binary / Gray Code" />
+    <select id="grayMode">
+      <option value="b2g">Binary → Gray</option>
+      <option value="g2b">Gray → Binary</option>
+    </select>
+    <button class="action" onclick="convertGray()">Convert</button>
+    <div class="output-box" id="grayResult"></div>
+  </section>
 
   <script>
+    function show(id) {
+      document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
+
+    function encodeHamming() {
+      let data = document.getElementById("dataBits").value.trim();
+      let parity = document.getElementById("paritySelect").value;
+      if (!/^[01]+$/.test(data)) return alert("Enter valid binary.");
+
+      let m = data.length, r = 0;
+      while (Math.pow(2, r) < m + r + 1) r++;
+      let total = m + r;
+      let h = Array(total + 1).fill(null);
+      let j = 0;
+
+      for (let i = 1; i <= total; i++) {
+        h[i] = (Math.log2(i) % 1 === 0) ? 'P' : data[j++];
+      }
+
+      for (let i = 0; i < r; i++) {
+        let p = Math.pow(2, i), count = 0;
+        for (let k = 1; k <= total; k++) {
+          if ((k & p) !== 0 && h[k] === '1') count++;
+        }
+        h[p] = (parity === 'odd') ? (count % 2 === 0 ? '1' : '0') : (count % 2 === 0 ? '0' : '1');
+      }
+
+      document.getElementById("hammingResult").textContent = h.slice(1).join('');
+    }
+
     function detectError() {
-      const input = document.getElementById("binary").value.trim();
-      const parityType = document.getElementById("parity").value.toLowerCase();
-      const resultDiv = document.getElementById("result");
+      const input = document.getElementById("errorInput").value.trim();
+      const parity = document.getElementById("errorParity").value;
+      if (!/^[01]+$/.test(input)) return alert("Invalid binary input");
 
-      // Validate input
-      if (!/^[01]+$/.test(input)) {
-        resultDiv.innerHTML = "<strong>Error:</strong> Please enter a valid binary string.";
-        resultDiv.className = "output error";
-        resultDiv.style.display = "block";
-        return;
-      }
+      let rev = input.split("").reverse();
+      let n = rev.length;
+      let pos = 0;
 
-      // Reverse input
-      const rev = input.split("").reverse().join("");
-      const n = rev.length;
-
-      // Calculate parity positions
-      let parityPositions = [];
-      for (let i = 0; (1 << i) <= n; i++) {
-        parityPositions.push(1 << i);
-      }
-
-      let errorBits = "";
-
-      for (let p of parityPositions) {
+      for (let i = 0; Math.pow(2, i) <= n; i++) {
+        let p = 1 << i;
         let count = 0;
-        for (let i = 1; i <= n; i++) {
-          if (((i & p) !== 0) && rev[i - 1] === '1') {
-            count++;
-          }
+        for (let k = 1; k <= n; k++) {
+          if ((k & p) && rev[k - 1] === '1') count++;
         }
-
-        if (parityType === "even") {
-          errorBits += (count % 2 === 0) ? "0" : "1";
-        } else if (parityType === "odd") {
-          errorBits += (count % 2 === 0) ? "1" : "0";
-        }
+        let bit = (parity === 'even') ? (count % 2 ? 1 : 0) : (count % 2 ? 0 : 1);
+        pos += bit * p;
       }
 
-      const errorBinary = errorBits.split("").reverse().join("");
-      const errorPosition = parseInt(errorBinary, 2);
-      let output = `<p><strong>Error position (1-based):</strong> ${errorPosition}</p>`;
-
-      if (errorPosition > 0 && errorPosition <= input.length) {
-        let corrected = input.split("");
-        let flipIndex = input.length - errorPosition;
-        corrected[flipIndex] = corrected[flipIndex] === '0' ? '1' : '0';
-        output += `<p><strong>Corrected binary:</strong> ${corrected.join("")}</p>`;
+      let output = `Error Position: ${pos}\n`;
+      if (pos > 0 && pos <= input.length) {
+        let corrected = input.split('');
+        corrected[input.length - pos] = corrected[input.length - pos] === '0' ? '1' : '0';
+        output += `Corrected Code: ${corrected.join('')}`;
       } else {
-        output += `<p>No error detected or position is invalid.</p>`;
+        output += `No Error Detected.`;
       }
 
-      resultDiv.innerHTML = output;
-      resultDiv.className = "output";
-      resultDiv.style.display = "block";
+      document.getElementById("errorResult").textContent = output;
+    }
+
+    function convertNumber() {
+      const base = parseInt(document.getElementById("inputBase").value);
+      const input = document.getElementById("numberInput").value.trim();
+      let decimal = parseInt(input, base);
+      if (isNaN(decimal)) return alert("Invalid number");
+
+      document.getElementById("conversionResult").innerHTML = `
+        Binary: ${decimal.toString(2)}<br>
+        Octal: ${decimal.toString(8)}<br>
+        Decimal: ${decimal}<br>
+        Hex: ${decimal.toString(16).toUpperCase()}
+      `;
+    }
+
+    function convertGray() {
+      let input = document.getElementById("grayBinaryInput").value.trim();
+      let mode = document.getElementById("grayMode").value;
+      if (!/^[01]+$/.test(input)) return alert("Invalid binary/gray");
+
+      if (mode === "b2g") {
+        let res = input[0];
+        for (let i = 1; i < input.length; i++)
+          res += (input[i - 1] === input[i]) ? "0" : "1";
+        document.getElementById("grayResult").textContent = "Gray Code: " + res;
+      } else {
+        let res = input[0];
+        let curr = input[0];
+        for (let i = 1; i < input.length; i++) {
+          curr = (curr === input[i]) ? '0' : '1';
+          res += curr;
+        }
+        document.getElementById("grayResult").textContent = "Binary Code: " + res;
+      }
     }
   </script>
 </body>
 </html>
-
