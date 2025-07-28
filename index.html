@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bit Code Converter Suite - Encode, Detect & Convert</title>
+  <meta name="description" content="All-in-one code utility to generate Hamming codes, detect errors, convert number systems, and transform Gray codes. Fast, simple, and futuristic." />
+  <meta name="keywords" content="hamming code, code converter, error detector, binary to gray, gray to binary, number system converter, digital electronics tool" />
+  <meta name="author" content="A Raghavendra" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- ✅ Open Graph Tags (for social sharing) -->
+  <meta property="og:title" content="Code Converter Suite" />
+  <meta property="og:description" content="Generate Hamming Codes, detect errors, and convert number systems in a futuristic web tool." />
+  <meta property="og:image" content="https://bit-code-converter.vercel.app/favico.png" />
+  <meta property="og:url" content="https://bit-code-converter.vercel.app/" />
+  <meta property="og:type" content="website" />
+
+  <!-- ✅ Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Code Converter Suite" />
+  <meta name="twitter:description" content="A powerful online code converter for Hamming, binary, gray, and more." />
+  <meta name="twitter:image" content="https://bit-code-converter.vercel.app/favico.png" />
+
+ 
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css"
+
+ </head>
+<body>
+<header class="top-bar">
+  <div class="top-bar-left">
+    <button class="menu-button" onclick="toggleDropdown(event)">☰</button>
+    <div class="dropdown-menu" id="dropdownMenu">
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </div>
+    
+  </div>
+   <div class="top-bar-right" id="authArea">
+    <button id="signupBtn" class="action" onclick="showSignup()">Sign Up</button>
+    <div id="userProfile" style="display:none;">
+      <span id="userEmail" style="margin-right: 10px;"></span>
+      <button class="action" onclick="logout()">Logout</button>
+    </div>
+  </div>
+
+  <div class="top-bar-center">
+    <h1>✨ Bit Code Converter</h1>
+    <p>One Tool to Encode, Detect Errors, and Convert Numbers & Gray Codes</p>
+  </div>
+
+ 
+
+  <nav class="top-bar-center">
+    <button onclick="show('encoder')">Hamming Encoder</button>
+    <button onclick="show('error')">Error Detector</button>
+    <button onclick="show('converter')">Number Converter</button>
+    <button onclick="show('gray')">Gray Code</button>
+  </nav>
+</header>
+
+
+  <section id="encoder" class="active">
+    <h2>Hamming Code Encoder</h2>
+    <input id="dataBits" placeholder="Enter binary data (e.g., 1011)" />
+    <select id="paritySelect">
+      <option value="even">Even Parity</option>
+      <option value="odd">Odd Parity</option>
+    </select>
+    <button class="action" onclick="encodeHamming()">Generate Hamming Code</button>
+    <div class="output-box" id="hammingResult"></div>
+    <button class="action" onclick="toggleExplain('hammingExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
+<div class="output-box" id="hammingExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+  </section>
+
+  <section id="error">
+    <h2>Hamming Code Error Detector</h2>
+    <input id="errorInput" placeholder="Enter received binary (e.g., 0100011)" />
+    <select id="errorParity">
+      <option value="even">Even Parity</option>
+      <option value="odd">Odd Parity</option>
+    </select>
+    <button class="action" onclick="detectError()">Detect & Correct</button>
+    <div class="output-box" id="errorResult"></div>
+    <button class="action" onclick="toggleExplain('errorExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
+<div class="output-box" id="errorExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+  </section>
+
+  <section id="converter">
+    <h2>Number System Converter</h2>
+    <select id="inputBase">
+      <option value="2">Binary</option>
+      <option value="8">Octal</option>
+      <option value="10">Decimal</option>
+      <option value="16">Hexadecimal</option>
+    </select>
+    <input id="numberInput" placeholder="Enter number" />
+    <button class="action" onclick="convertNumber()">Convert</button>
+    <div class="output-box" id="conversionResult"></div>
+    <button class="action" onclick="toggleExplain('conversionExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
+<div class="output-box" id="conversionExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+
+  </section>
+
+  <section id="gray">
+    <h2>Gray Code Converter</h2>
+    <input id="grayBinaryInput" placeholder="Enter Binary / Gray Code" />
+    <select id="grayMode">
+      <option value="b2g">Binary → Gray</option>
+      <option value="g2b">Gray → Binary</option>
+    </select>
+    <button class="action" onclick="convertGray()">Convert</button>
+    <div class="output-box" id="grayResult"></div>
+    <button class="action" onclick="toggleExplain('grayExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
+<div class="output-box" id="grayExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+  </section>
+
+  <script src="working.js">
+
+  </script>
+</body>
+</html>
