@@ -50,7 +50,7 @@ Bit Code Converter Suite is an all-in-one online tool for encoding Hamming codes
 ---
 
 
-| ![phone](phone_view) | ![CGPA](desktop_view) |
+| ![phone](phone_view) | ![CGPA](laptop_view) |
 ## 🙋 Author
 
 **Raghavendra Arella**  
