@@ -1,0 +1,6 @@
+User-agent: *
+Disallow: /login.html
+Disallow: /signup.html
+Allow: /
+
+Sitemap: https://bit-code-converter.vercel.app/sitemap.xml
