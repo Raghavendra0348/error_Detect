@@ -26,12 +26,16 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Redirect on successful login/signup
 function redirectToIndex(user) {
     const username = user.displayName || user.email;
     localStorage.setItem('username', username);
+
+    // ✅ Store flag to trigger toast
+    localStorage.setItem('showLoginToast', 'true');
+
     window.location.href = "index.html";
 }
+
 
 // Login handler
 document.getElementById('loginForm').addEventListener('submit', function (e) {

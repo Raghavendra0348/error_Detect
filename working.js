@@ -1,23 +1,34 @@
 
 let currentUser = localStorage.getItem("username");
 document.addEventListener("DOMContentLoaded", () => {
-        const signupBtn = document.getElementById("signupBtn");
-        const profileBox = document.getElementById("userProfile");
-        const userEmail = document.getElementById("userEmail");
+  const currentUser = localStorage.getItem("username");
 
-        if (currentUser) {
-                signupBtn.style.display = "none";
-                profileBox.style.display = "inline-block";
-                userEmail.textContent = currentUser;
-        } else {
-                signupBtn.style.display = "inline-block";
-                profileBox.style.display = "none";
-        }
+  // ✅ Show toast after login/signup
+  if (localStorage.getItem("showLoginToast") === "true") {
+    showLoginToast();
+    localStorage.removeItem("showLoginToast");
+  }
+
+  // ✅ Update UI
+  const signupBtn = document.getElementById("signupBtn");
+  const profileBox = document.getElementById("userProfile");
+  const userEmail = document.getElementById("userEmail");
+
+  if (currentUser) {
+    signupBtn.style.display = "none";
+    profileBox.style.display = "inline-block";
+    userEmail.textContent = currentUser;
+  } else {
+    signupBtn.style.display = "inline-block";
+    profileBox.style.display = "none";
+  }
 });
 
+
 function isLoggedIn() {
-        return currentUser !== null;
+  return localStorage.getItem("username") !== null;
 }
+
 
 function showSignup() {
         localStorage.setItem("redirectAfterLogin", "index.html");
@@ -26,9 +37,18 @@ function showSignup() {
 
 
 function show(id) {
-        document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
+  // Hide all sections
+  document.querySelectorAll('main > section').forEach(section => {
+    section.classList.remove('active');
+  });
+
+  // Show the one requested
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active');
+  }
 }
+
 
 function encodeHamming() {
         let data = document.getElementById("dataBits").value.trim();
@@ -346,9 +366,18 @@ function convertGray() {
 
 
 function logout() {
-        localStorage.clear();
-        window.location.href = "login.html";
+  document.getElementById("logoutModal").style.display = "block";
 }
+
+function confirmLogout() {
+  localStorage.clear();
+  window.location.href = "index.html";
+}
+
+function closeModal() {
+  document.getElementById("logoutModal").style.display = "none";
+}
+
 function toggleMenu() {
         const menu = document.getElementById("menuLinks");
         menu.classList.toggle("show");
@@ -364,5 +393,13 @@ function closeMenu(event) {
 function toggleDropdown() {
         const menu = document.getElementById("dropdownMenu");
         menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+}
+function showLoginToast() {
+  const toast = document.getElementById("loginToast");
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2000); // 2 seconds
 }
 
