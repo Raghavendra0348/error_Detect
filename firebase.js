@@ -13,13 +13,14 @@ import {
 // Firebase configuration
 const firebaseConfig = {
  
-
-    apiKey: "AIzaSyCPiwVC_iAXd9XEPq30OGL2_MV5KiSXUIg",
-    authDomain: "sample-login-for-all.firebaseapp.com",
-    projectId: "sample-login-for-all",
-    storageBucket: "sample-login-for-all.appspot.app",
-    messagingSenderId: "673683309349",
-    appId: "1:673683309349:web:bc8e0f4991774d94a750cc"
+ apiKey: "AIzaSyBI0HJ18hdUJFtHJZqXZAFXTFOZZ0gOXbA",
+  authDomain: "bit-code-converter.firebaseapp.com",
+  projectId: "bit-code-converter",
+  storageBucket: "bit-code-converter.firebasestorage.app",
+  messagingSenderId: "324385088905",
+  appId: "1:324385088905:web:8af1c57536fc1eb1862d58",
+  measurementId: "G-RQLTS0PSYB"
+   
 };
 
 // Initialize Firebase
