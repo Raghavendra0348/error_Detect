@@ -50,86 +50,101 @@ function show(id) {
 }
 
 
-function encodeHamming() {
-        let data = document.getElementById("dataBits").value.trim();
-        let parity = document.getElementById("paritySelect").value;
-        if (!/^[01]+$/.test(data)) {
-                return alert("🚫 Please enter a valid binary number (0s and 1s only).");
+
+  function encodeHamming() {
+      const dataInput = document.getElementById("dataBits").value.trim();
+      const parityType = document.getElementById("paritySelect").value.toLowerCase();
+      const isOddParity = parityType === "odd";
+
+      if (!/^[01]+$/.test(dataInput)) {
+        alert("🚫 Please enter a valid binary number (0s and 1s only).");
+        return;
+      }
+
+      const data = dataInput.split('').reverse().map(bit => parseInt(bit));
+      const m = data.length;
+
+      let r = 0;
+      while (Math.pow(2, r) < m + r + 1) r++;
+      const n = m + r;
+
+      const hamming = Array(n + 1).fill(0); // 1-based indexing
+      let j = 0;
+
+      for (let i = 1; i <= n; i++) {
+        if ((i & (i - 1)) === 0) {
+          hamming[i] = 0;
+        } else {
+          hamming[i] = data[j++];
         }
+      }
 
-        let m = data.length, r = 0;
-        while (Math.pow(2, r) < m + r + 1) r++;
-        let total = m + r;
-        let h = Array(total + 1).fill(null);
-        let j = 0;
-        let steps = [];
+      const steps = [];
 
-        steps.push(`
-    <div class="step-card">
-      <div class="step-header">🔢 Step 1: Data Bits Count</div>
-      <div class="step-body">You entered <strong>${m}</strong> data bits.</div>
-    </div>
-  `);
-
-        steps.push(`
-    <div class="step-card">
-      <div class="step-header">📐 Step 2: Calculate Parity Bits</div>
-      <div class="step-body">We calculate <strong>${r}</strong> parity bits because <code>2^r ≥ m + r + 1</code></div>
-    </div>
-  `);
-
-        steps.push(`
-    <div class="step-card">
-      <div class="step-header">📦 Step 3: Total Bits in Hamming Code</div>
-      <div class="step-body">Total bits = Data bits + Parity bits = <strong>${total}</strong></div>
-    </div>
-  `);
-
-        for (let i = 1; i <= total; i++) {
-                h[i] = (Math.log2(i) % 1 === 0) ? '🅿️' : data[j++];
-        }
-
-        steps.push(`
-    <div class="step-card">
-      <div class="step-header">🧩 Step 4: Insert Parity & Data Bits</div>
-      <div class="step-body">
-        We place parity bits at positions that are powers of 2 (marked as 🅿️):<br>
-        <code class="bit-display">${h.slice(1).join(' ')}</code>
-      </div>
-    </div>
-  `);
-
-        for (let i = 0; i < r; i++) {
-                let p = Math.pow(2, i), count = 0, pos = [];
-                for (let k = 1; k <= total; k++) {
-                        if ((k & p) !== 0) {
-                                pos.push(k);
-                                if (h[k] === '1') count++;
-                        }
-                }
-
-                h[p] = (parity === 'odd')
-                        ? (count % 2 === 0 ? '1' : '0')
-                        : (count % 2 === 0 ? '0' : '1');
-
-                steps.push(`
-      <div class="step-card">
-        <div class="step-header">🧮 Step 5: Calculate Parity Bit P${p}</div>
-        <div class="step-body">
-          <strong>P${p}</strong> checks positions: <code>${pos.join(', ')}</code><br>
-          Number of 1s in those positions: <strong>${count}</strong><br>
-          Parity Type: <strong>${parity.toUpperCase()}</strong><br>
-          ➤ <strong>P${p} = ${h[p]}</strong>
+      steps.push(`
+        <div class="step-box">
+          <h3>📐 Step 0: Calculate Number of Parity Bits (r)</h3>
+          <p>We use the formula: <strong>2<sup>r</sup> ≥ m + r + 1</strong></p>
+          <p>Given: m = ${m}</p>
+          <p>Smallest r such that 2<sup>r</sup> ≥ ${m} + r + 1 → <strong>${r}</strong></p>
+          <p>Total bits (n) = m + r = <strong>${n}</strong></p>
+          <p>Parity bit positions: ${Array.from({ length: r }, (_, i) => Math.pow(2, i)).join(', ')}</p>
         </div>
-      </div>
-    `);
-        }
+      `);
 
-        document.getElementById("hammingResult").textContent = `✅ Hamming Code: ${h.slice(1).join('')}`;
-        document.getElementById("hammingExplain").innerHTML = steps.join('');
-        document.getElementById("hammingExplain").style.display = "none";
+      for (let i = 0; i < r; i++) {
+  const parityPos = Math.pow(2, i);
+
+  const coveredPositions = Array.from({ length: n }, (_, idx) => idx + 1)
+    .filter(k => (k & parityPos) !== 0);
+
+  const onesCount = coveredPositions.reduce((count, k) => count + hamming[k], 0);
+
+  // Calculate parity bit based on even or odd parity
+  let parityBit;
+  let parityExplanation;
+
+  if (isOddParity) {
+    parityBit = onesCount % 2 === 0 ? 1 : 0;
+    parityExplanation = `Count of 1s = ${onesCount} → Even → Flip to get Odd Parity → <strong>${parityBit}</strong>`;
+  } else {
+    parityBit = onesCount % 2 === 0 ? 0 : 1;
+    parityExplanation = `Count of 1s = ${onesCount} → ${onesCount % 2 === 0 ? 'Even' : 'Odd'} → Set parity for Even Parity → <strong>${parityBit}</strong>`;
+  }
+
+  hamming[parityPos] = parityBit;
+
+  const bitsInvolved = coveredPositions.map(k => `h[${k}] = ${hamming[k]}`).join(', ');
+
+  steps.push(`
+    <div class="step-box">
+      <h3>🧮 Step ${i + 1}: Calculate Parity Bit at Position ${parityPos}</h3>
+      <p><strong>Covered Positions:</strong> ${coveredPositions.join(', ')}</p>
+      <p><strong>Bits:</strong> ${bitsInvolved}</p>
+      <p><strong>Number of 1s:</strong> ${onesCount}</p>
+      <p><strong>${isOddParity ? 'Odd Parity' : 'Even Parity'} Selected</strong></p>
+      <p>${parityExplanation}</p>
+      <p><strong>Set h[${parityPos}] = ${parityBit}</strong></p>
+    </div>
+  `);
 }
+const finalCode = hamming.slice(1).reverse().join('');
+const hammingBits = hamming.slice(1).reverse().map((bit, i) => `Bit ${n - i} = ${bit}`).join('<br>');
 
+steps.push(`
+  <div class="step-box">
+    <h3>✅ Final Step: Construct the Hamming Code</h3>
+    <p><strong>Hamming Code (from bit ${n} to 1):</strong> ${finalCode}</p>
+    <p><strong>Bit-by-Bit View:</strong></p>
+    <p>${hammingBits}</p>
+  </div>
+`);
+
+      const result = hamming.slice(1).reverse().join('');
+      document.getElementById("hammingResult").textContent = `✅ Hamming Code (bit ${n} to 1): ${result}`;
+      document.getElementById("hammingExplain").innerHTML = steps.join('');
+      document.getElementById("hammingExplain").style.display = "none";
+    }
 function toggleExplain(id) {
         if (!isLoggedIn()) {
                 localStorage.setItem("redirectAfterLogin", "index.html");
