@@ -34,6 +34,7 @@
   <meta name="google-adsense-account" content="ca-pub-7812693991042173">
   <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZXE68KBKC"></script>
+
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -44,102 +45,271 @@
 </head>
 <body>
 
-<!-- Header Section -->
-<header class="top-bar">
-  <div class="top-bar-left">
-    <button class="menu-button" onclick="toggleDropdown(event)">☰</button>
-    <div class="dropdown-menu" id="dropdownMenu">
-  <a href="#" onclick="show('about')" >About</a>
-<a href="#" onclick="show('contact')" >Contact</a>
-<a href="#" onclick="show('privacy')" >Privacy Policy</a>
-<a href="#" onclick="show('terms')" >Terms & Conditions</a>
+<!-- Header -->
+<header class="main-header">
+<!-- Left: Auth -->
+<div class="header-left" id="authArea">
+  <!-- Profile area for logged-in users -->
+  <div id="userProfile" style="display:none;">
+    <span id="userEmail" style="margin-right: 10px;"></span>
+    <button onclick="logout()">Logout</button>
+  </div>
 
-  <a href="#" onclick="logout()">Logout</a>
+  <!-- Sign-up button for guests -->
+  <button class="signupbutton" id="signupBtn" class="action" onclick="showSignup()">Sign Up</button>
 </div>
+<h3 id="refresh" >Bit Code Converter</h3>
+  <!-- Right: Navigation -->
+  <nav class="header-right">
+     <button><a href="#" onclick="show('about')">About</a></button>
+ <button> <a href="#" onclick="show('contact')">Contact</a></button>
+  <button><a href="#" onclick="show('terms')">Terms</a></button>
+  <button><a href="#" onclick="show('privacy')">Privacy</a></button>
+</nav>
 
-   </div>
- 
-
-
-  <div class="top-bar-right" id="authArea">
-    <button id="signupBtn" class="action" onclick="showSignup()">Sign Up</button>
-    <div id="userProfile" style="display:none;">
-      <span id="userEmail" style="margin-right: 10px;"></span>
-      <button class="action" onclick="logout()">Logout</button>
-    </div>
-  </div>
-
-
-  <div class="top-bar-center">
-    <h1>✨ Bit Code Converter</h1>
-    <p>One Tool to Encode, Detect Errors, and Convert Numbers & Gray Codes</p>
-  </div>
-<div id="loginToast" class="toast">✅ Successfully Logged In!</div>
-  <nav class="top-bar-center">
-    <button onclick="show('encoder')">Hamming Encoder</button>
-    <button onclick="show('error')">Error Detector</button>
-    <button onclick="show('converter')">Number Converter</button>
-    <button onclick="show('gray')">Gray Code</button>
-  </nav>
-  
-
+  <!-- Mobile Menu Button -->
+  <button class="menu-button" onclick="toggleMenu()">☰</button>
 </header>
+
+<!-- Mobile Dropdown -->
+<nav class="mobile-menu" id="mobileMenu" >
+  <a href="#" onclick="show('about')">About</a>
+  <a href="#" onclick="show('contact')">Contact</a>
+  <a href="#" onclick="show('terms')">Terms</a>
+  <a href="#" onclick="show('privacy')">Privacy</a>
+</nav>
+
+<!-- Tools Navigation -->
+<nav class="tools-nav">
+  <button onclick="show('encoder')">Hamming Encoder</button>
+  <button onclick="show('error')">Error Detector</button>
+  <button onclick="show('converter')">Number Converter</button>
+  <button onclick="show('gray')">Gray Code</button>
+</nav>
+
 
 <!-- Sections -->
 <main>
-  <section id="encoder" class="active">
-    <h2>Hamming Code Encoder</h2>
-    <input id="dataBits" placeholder="Enter binary data (e.g., 1011)" />
-    <select id="paritySelect">
-      <option value="even">Even Parity</option>
-      <option value="odd">Odd Parity</option>
-    </select>
-    <button class="action" onclick="encodeHamming()">Generate Hamming Code</button>
-    <div class="output-box" id="hammingResult"></div>
-    <button class="action" onclick="toggleExplain('hammingExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
-    <div class="output-box" id="hammingExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
-  </section>
+ <section id="encoder" class="active">
+  <h2>Hamming Code Encoder</h2>
+  <input id="dataBits" placeholder="Enter binary data (e.g., 1011)" />
+  <select id="paritySelect">
+    <option value="even">Even Parity</option>
+    <option value="odd">Odd Parity</option>
+  </select>
+  <button class="action" onclick="encodeHamming()">Generate Hamming Code</button>
+
+  <!-- Output calculation -->
+  <div class="output-box" id="hammingResult"></div>
+  <button class="action" onclick="toggleExplain('hammingExplain')" style="margin-top: 10px; background:#eee; color:black;">Answer Explaination (Steps)</button>
+  <div class="output-box" id="hammingExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+  <!-- ✅ Learning Notes -->
+  <div style="background:#f1fff1; color:#222; padding:15px; border-radius:8px; margin-top: 20px;">
+  <h3>📘 Hamming Code Basics</h3>
+
+  <!-- Definition -->
+  <h4>🔹 Definition</h4>
+  <p>Hamming codes are a type of error-detecting and error-correcting code that allows the detection and correction of single-bit errors in data transmission or storage. They add extra <b>parity bits</b> to data to ensure accuracy.</p>
+
+  <!-- Formula -->
+  <h4>🔹 Formula</h4>
+  <p>
+    <b>To find number of parity bits (p):</b><br>
+    <code>2<sup>p</sup> ≥ m + p + 1</code><br>
+    Where:<br>
+    <b>p</b> = parity bits,<br>
+    <b>m</b> = data bits
+  </p>
+
+  <!-- Important Points -->
+  <h4>🔹 Important Points</h4>
+  <ul>
+    <li>Two main types: <b>Even Parity</b> and <b>Odd Parity</b></li>
+    <li>Parity bits are placed at positions that are powers of 2 (1, 2, 4, 8, ...)</li>
+    <li>Each parity bit checks a specific set of bits, based on binary positions.</li>
+    <li>Can correct <b>single-bit errors</b> and detect <b>two-bit errors</b>.</li>
+    <li>Widely used in computer memory (ECC RAM) and communication systems.</li>
+  </ul>
+
+  <!-- Process -->
+  <h4>🔹 Process</h4>
+  <ol>
+    <li>Determine <b>p</b> using the formula.</li>
+    <li>Place parity bits at positions: 1, 2, 4, 8, etc.</li>
+    <li>Fill remaining positions with data bits.</li>
+    <li>Calculate each parity bit value by checking specific positions.</li>
+    <li>Transmit the full codeword (data + parity bits).</li>
+  </ol>
+
+  <!-- Example -->
+  <h4>🔹 Example</h4>
+<p><b>Data:</b> 1011 (Even Parity)</p>
+<p>Step 1: m = 4 → Find p using <code>2<sup>p</sup> ≥ m + p + 1</code></p>
+<p>Step 2: p = 3 → Total bits = 7 → Positions (reverse view): P1, P2, D1, P4, D2, D3, D4 → shown as bit 7 to bit 1.</p>
+<p>Step 3: Fill data bits (7→1): 1 0 1 _ 1 _ _</p>
+<p>Step 4: Calculate parity bits:</p>
+<ul>
+  <li>P1 (bit 1) = ?</li>
+  <li>P2 (bit 2) = ?</li>
+  <li>P4 (bit 4) = ?</li>
+</ul>
+<p><b>Final Hamming Code (7→1):</b> 1 0 1 P4 1 P2 P1</p>
+
+</div>
+
+</section>
+
 
   <section id="error">
     <h2>Hamming Code Error Detector</h2>
-    <input id="errorInput" placeholder="Enter received binary (e.g., 0100011)" />
-    <select id="errorParity">
-      <option value="even">Even Parity</option>
-      <option value="odd">Odd Parity</option>
-    </select>
-    <button class="action" onclick="detectError()">Detect & Correct</button>
-    <div class="output-box" id="errorResult"></div>
-    <button class="action" onclick="toggleExplain('errorExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
-    <div class="output-box" id="errorExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
-  </section>
+<input id="errorInput" placeholder="Enter received binary (e.g., 0100011)" />
+<select id="errorParity">
+  <option value="even">Even Parity</option>
+  <option value="odd">Odd Parity</option>
+</select>
+<button class="action" onclick="detectError()">Detect & Correct</button>
+<div class="output-box" id="errorResult"></div>
+<button class="action" onclick="toggleExplain('errorExplain')" style="margin-top: 1px; background:#eee; color:black;">Answer Explaination (Steps)</button>
+<div class="output-box" id="errorExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+<!-- Concept Explanation Section -->
+<div class="concept-box" style="margin-top: 15px; padding: 15px; background: #f0f0f0; border-left: 5px solid #007bff; font-family: Arial; font-size: 16px; line-height: 1.5;">
+  <h3 style="margin-top:0;">📘 Concept: Hamming Code Error Detection</h3>
+  <p><b>Definition:</b> Hamming Code is an error-detecting and error-correcting code that can detect up to two-bit errors and correct one-bit errors in data transmission.</p>
+
+  <p><b>Formula for Parity Bits:</b></p>
+  <pre style="background:#fff; padding:8px; border:1px solid #ccc; font-family:'Courier New', monospace;">
+2^p ≥ m + p + 1
+Where:
+p = number of parity bits
+m = number of data bits
+  </pre>
+
+  <p><b>📌 Concept:</b></p>
+<p>
+Hamming code error detection works by using <b>parity bits</b> placed at specific positions in the data.  
+Each parity bit is responsible for checking certain positions (including itself) to ensure the total number of 1s matches the chosen parity (even or odd).
+If a bit is flipped due to transmission errors, one or more parity checks will fail.  
+By combining the positions of failed parity bits, we can find the exact location of the error and correct it.
+</p>
+
+<p><b>🛠 How Detection Works (Step-by-step):</b></p>
+<ol>
+  <li>Number the bit positions starting from 1 (left to right or right to left, depending on convention).</li>
+  <li>Identify parity bit positions (powers of 2 → 1, 2, 4, 8, ...).</li>
+  <li>Each parity bit checks a group of positions following its pattern:
+    <ul>
+      <li><b>P1</b> checks positions 1, 3, 5, 7, 9, ...</li>
+      <li><b>P2</b> checks positions 2, 3, 6, 7, 10, ...</li>
+      <li><b>P4</b> checks positions 4–7, 12–15, ...</li>
+    </ul>
+  </li>
+  <li>If a parity check fails, note down its position value.</li>
+  <li>Add up the values of failed parity bits → this sum gives the <b>exact position</b> of the error.</li>
+  <li>Flip the bit at that position to correct the code.</li>
+</ol>
+
+<p><b>💡 Example (Even Parity):</b></p>
+<pre style="background:#fff; padding:8px; border:1px solid #ccc; font-family:'Courier New', monospace;">
+Received code:  0 1 0 0 0 1 1
+Position index: 1 2 3 4 5 6 7
+Parity type:    Even
+
+Step 1: Check P1 → bits 1, 3, 5, 7 → (0, 0, 0, 1) → 1 one → FAIL  
+Step 2: Check P2 → bits 2, 3, 6, 7 → (1, 0, 1, 1) → 3 ones → FAIL  
+Step 3: Check P4 → bits 4, 5, 6, 7 → (0, 0, 1, 1) → 2 ones → PASS  
+
+Failed parity bits: P1 (1), P2 (2) → Sum = 1 + 2 = 3  
+→ Error is in position 3.
+
+Step 4: Flip bit 3 → Corrected code: 0 1 1 0 0 1 1
+</pre>
+
+<p><b>✅ Key Points:</b></p>
+<ul>
+  <li>Position numbers are important for locating the error.</li>
+  <li>Only <b>one-bit errors</b> can be detected and corrected with basic Hamming code.</li>
+  <li>Multiple-bit errors may go undetected or be incorrectly corrected.</li>
+</ul>
+
+</div>
+</section>
 
   <section id="converter">
-    <h2>Number System Converter</h2>
-    <select id="inputBase">
-      <option value="2">Binary</option>
-      <option value="8">Octal</option>
-      <option value="10">Decimal</option>
-      <option value="16">Hexadecimal</option>
-    </select>
-    <input id="numberInput" placeholder="Enter number" />
-    <button class="action" onclick="convertNumber()">Convert</button>
-    <div class="output-box" id="conversionResult"></div>
-    <button class="action" onclick="toggleExplain('conversionExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
-    <div class="output-box" id="conversionExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
-  </section>
+  <h2>Number System Converter</h2>
+  
+  <select id="inputBase">
+    <option value="2">Binary</option>
+    <option value="8">Octal</option>
+    <option value="10">Decimal</option>
+    <option value="16">Hexadecimal</option>
+  </select>
+  
+  <input id="numberInput" placeholder="Enter number" />
+  <button class="action" onclick="convertNumber()">Convert</button>
+  
+  <div class="output-box" id="conversionResult"></div>
+  
+  <button class="action" onclick="toggleExplain('conversionExplain')" style="margin-top: 1px; background:#eee; color:black;">Answer Explaination (Steps)</button>
+  
+    <h3>Concept of Number System Conversion</h3>
+    <p>Number systems are ways of representing numbers using different bases:</p>
+    <ul>
+      <li><b>Binary (Base 2):</b> Uses only 0 and 1. Example: <code>1011₂</code> = 11 in decimal.</li>
+      <li><b>Octal (Base 8):</b> Uses digits 0–7. Example: <code>17₈</code> = 15 in decimal.</li>
+      <li><b>Decimal (Base 10):</b> Standard number system with digits 0–9.</li>
+      <li><b>Hexadecimal (Base 16):</b> Uses digits 0–9 and A–F. Example: <code>1A₁₆</code> = 26 in decimal.</li>
+    </ul>
+    <p><b>How Conversion Works:</b></p>
+    <ol>
+      <li><b>To Decimal:</b> Multiply each digit by its base power and sum them up.<br>
+        Example: <code>1011₂</code> = (1×2³) + (0×2²) + (1×2¹) + (1×2⁰) = 8 + 0 + 2 + 1 = <b>11</b></li>
+      <li><b>From Decimal:</b> Keep dividing by the target base and take remainders in reverse order.<br>
+        Example: 26 → divide by 16 → quotient=1, remainder=10 (A) → result: <b>1A₁₆</b></li>
+      <li><b>Direct Conversion:</b> For binary ↔ octal/hex, group bits in sets of 3 (octal) or 4 (hex) and convert directly.</li>
+    </ol>
+  </div>
+</section>
 
-  <section id="gray">
-    <h2>Gray Code Converter</h2>
-    <input id="grayBinaryInput" placeholder="Enter Binary / Gray Code" />
-    <select id="grayMode">
-      <option value="b2g">Binary → Gray</option>
-      <option value="g2b">Gray → Binary</option>
-    </select>
-    <button class="action" onclick="convertGray()">Convert</button>
-    <div class="output-box" id="grayResult"></div>
-    <button class="action" onclick="toggleExplain('grayExplain')" style="margin-top: 1px; background:#eee; color:black;">Explain</button>
-    <div class="output-box" id="grayExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
-  </section>
+
+
+
+<section id="gray">
+  <h2>Gray Code Converter</h2>
+  
+  <!-- Topic Explanation -->
+ 
+
+  <!-- Converter UI -->
+  <input id="grayBinaryInput" placeholder="Enter Binary / Gray Code" />
+  <select id="grayMode">
+    <option value="b2g">Binary → Gray</option>
+    <option value="g2b">Gray → Binary</option>
+  </select>
+  <button class="action" onclick="convertGray()">Convert</button>
+  
+  <div class="output-box" id="grayResult"></div>
+  
+  <!-- Step-by-step Explanation -->
+  <button class="action" onclick="toggleExplain('grayExplain')" style="margin-top: 1px; background:#eee; color:black;">Answer Explaination (Steps)</button>
+  <div class="output-box" id="grayExplain" style="display: none; background:#f7f7f7; color:#222;"></div>
+
+   <div class="topic-explain" style="background:#fafafa; border:1px solid #ddd; padding:10px; margin-bottom:10px; border-radius:5px;">
+    <h3 style="margin-top:10;">What is Gray Code?</h3>
+    <p style="font-size: 15px; line-height:1.5;">
+      Gray code is a binary numeral system where two successive values differ by only one bit.  
+      It is often used in digital communication and error correction to minimize errors during transitions.
+      <br><br>
+      <strong>Binary → Gray:</strong> The first bit remains the same; each next bit is the XOR of the previous binary bit and the current binary bit.  
+      <strong>Gray → Binary:</strong> The first bit remains the same; each next binary bit is the XOR of the previous binary bit and the current Gray bit.
+    </p>
+    <p style="margin-top:5px;"><strong>Example:</strong><br>
+      Binary: <code>1011</code> → Gray: <code>1110</code>
+    </p>
+  </div>
+</section>
+
   
   <section id="about" >
   <h2>About Bit Code Converter</h2>
@@ -168,7 +338,7 @@
 </main>
 
 <!-- ✅ Footer -->
-<footer style="margin-top: 40px; padding: 20px; background: #111; color: #eee; text-align: center;">
+<footer style="margin-top: 40px; padding: 20px; background: #111; color: #eee; text-align: center; position: relative;">
   <div style="margin-bottom: 10px;">
       <a href="#" onclick="show('encoder')" style="color:#ccc; margin: 0 10px;">home</a> |
     <a href="#" onclick="show('about')" style="color:#ccc; margin: 0 10px;">About</a> |
@@ -187,8 +357,12 @@
   </div>
 </div>
 
-<script src="working.js"></script>
 
 </body>
+<script src="working.js"></script>
+
+
+</script>
+
 </html>
 

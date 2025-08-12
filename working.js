@@ -36,17 +36,16 @@ function showSignup() {
 }
 
 
-function show(id) {
+function show(sectionId) {
   // Hide all sections
-  document.querySelectorAll('main > section').forEach(section => {
-    section.classList.remove('active');
-  });
+  const sections = document.querySelectorAll('main section');
+  sections.forEach(sec => sec.style.display = 'none');
 
-  // Show the one requested
-  const target = document.getElementById(id);
-  if (target) {
-    target.classList.add('active');
-  }
+  // Show the selected section
+  document.getElementById(sectionId).style.display = 'block';
+
+  // Close mobile menu after click
+  document.getElementById('mobileMenu').style.display = 'none';
 }
 
 
@@ -394,8 +393,8 @@ function closeModal() {
 }
 
 function toggleMenu() {
-        const menu = document.getElementById("menuLinks");
-        menu.classList.toggle("show");
+  const menu = document.getElementById('mobileMenu');
+  menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
 }
 function toggleOverlay() {
         document.getElementById("mobileMenuOverlay").classList.toggle("show");
@@ -418,3 +417,17 @@ function showLoginToast() {
   }, 2000); // 2 seconds
 }
 
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('mobileMenu');
+  const menuBtn = document.querySelector('.menu-button');
+  if (window.innerWidth <= 768) {  // mobile only
+    if (!menu.contains(e.target) && !menuBtn.contains(e.target)) {
+      menu.style.display = 'none';
+    }
+  }
+});
+
+
+document.querySelector('#refresh').addEventListener('click', () => {
+  location.reload();
+});
