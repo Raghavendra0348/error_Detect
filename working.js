@@ -13,15 +13,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const signupBtn = document.getElementById("signupBtn");
   const profileBox = document.getElementById("userProfile");
   const userEmail = document.getElementById("userEmail");
+if (currentUser) {
+  signupBtn.style.display = "none";
+  profileBox.style.display = "inline-block";
+  userEmail.textContent = currentUser;
+  
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.style.display = "inline-block"; 
+} else {
+  signupBtn.style.display = "inline-block";
+  profileBox.style.display = "none";
 
-  if (currentUser) {
-    signupBtn.style.display = "none";
-    profileBox.style.display = "inline-block";
-    userEmail.textContent = currentUser;
-  } else {
-    signupBtn.style.display = "inline-block";
-    profileBox.style.display = "none";
-  }
+  const logoutBtn = document.getElementById("logoutBtn");
+  logoutBtn.style.display = "none"; 
+}
+
 });
 
 

@@ -129,7 +129,7 @@ nav, .main-nav, .tools-nav {
 }
 .tools-nav {
   margin-top: 1rem;
-  padding: 0.5rem 0;
+  padding: 0.3rem 0;
   border-radius: 10px;
 display: inline-flex;  /* or just 'flex' */
   flex-wrap: wrap;
@@ -539,7 +539,7 @@ nav button:hover,
 }
 
 /* On desktop - default (auto width or full width) */
-@media (min-width: 769px) {
+@media (min-width: 481px) {
   .tools-nav > * {
     flex: 0 0 auto; /* or whatever default you want */
   }
