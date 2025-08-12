@@ -350,7 +350,7 @@ nav button:hover,
 }
 
 /* Mobile View */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   h3 {
     font-size: 20px;
   }
@@ -492,7 +492,7 @@ nav button:hover,
 }
 
 /* On mobile, hide desktop menu and show hamburger menu */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .desktop-menu {
     display: none;
   }
@@ -522,7 +522,7 @@ nav button:hover,
 }
 
 /* On desktop, hide hamburger and mobile menu by default */
-@media (min-width: 769px) {
+@media (min-width: 481px) {
   .menu-button {
     display: none;
   }
@@ -531,7 +531,7 @@ nav button:hover,
     display: none !important;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .tools-nav > * {
     flex: 0 0 calc(50% - 10px);  /* each item takes half width minus gap */
     box-sizing: border-box;
